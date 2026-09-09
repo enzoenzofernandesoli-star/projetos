@@ -54,9 +54,14 @@ export type Projeto = {
 };
 
 /**
- * Endereços verificados por requisição HTTP em 08/09/2026: todos responderam
- * 200 e nenhum envia X-Frame-Options ou frame-ancestors, então a janela ao
- * vivo funciona. Os sem `url` foram verificados no mesmo dia.
+ * Endereços verificados em 08/09/2026 por requisição HTTP: respondem 200,
+ * não enviam X-Frame-Options nem frame-ancestors, e — isto é o que importa —
+ * o conteúdo devolvido cita o nome do próprio projeto.
+ *
+ * Só o status não serve de prova. `prospector.vercel.app` responde 200 e
+ * pertence a outra empresa: um jogo. Endereço curto em domínio compartilhado
+ * quase sempre já tem dono, então confira o corpo da resposta antes de
+ * apontar um card para ele.
  */
 export const projetos: Projeto[] = [
   // ---------------- Sites ----------------
@@ -170,7 +175,7 @@ export const projetos: Projeto[] = [
       "Ferramenta que encontra negócios sem site, organiza a abordagem e dispara em sequência.",
     servico: "sistemas",
     capa: "/capas/prospector.png",
-    url: "https://prospector.vercel.app",
+    restricao: "Acesso restrito — exige login",
   },
   {
     nome: "Agenda Viveci",
