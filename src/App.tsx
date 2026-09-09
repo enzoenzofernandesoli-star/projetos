@@ -1,23 +1,33 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { projetos, servicos, type Projeto, type ServicoId } from "./projetos";
 import { Janela, MioloJanela } from "./components/Janela";
 import { Visualizador } from "./components/Visualizador";
 import { LogoVVC } from "./components/LogoVVC";
+import { Reveal } from "./components/Reveal";
+import { TextReveal } from "./components/TextReveal";
+import { Cursor } from "./components/Cursor";
+import { BarraProgresso } from "./components/BarraProgresso";
+import { useMagnetic } from "./hooks/useMagnetic";
+import { useDepthMotion } from "./hooks/useDepthMotion";
+import { useHeroParallax } from "./hooks/useHeroParallax";
 
 function CardProjeto({
   projeto,
   aoAbrir,
+  index,
 }: {
   projeto: Projeto;
   aoAbrir: () => void;
+  index: number;
 }) {
   const abrivel = Boolean(projeto.url) || Boolean(projeto.exclusivo);
   return (
-    <article className="group">
+    <Reveal as="article" index={index} className="group" data-depth="card">
       <button
         type="button"
         onClick={aoAbrir}
         disabled={!abrivel}
+        data-cursor={projeto.exclusivo ? "Exclusivo" : projeto.url ? "Ver" : undefined}
         aria-label={
           abrivel
             ? `Abrir prévia de ${projeto.nome}`
@@ -25,7 +35,7 @@ function CardProjeto({
         }
         className="block w-full text-left transition-transform duration-300 ease-[var(--ease-out)] enabled:group-hover:-translate-y-1 disabled:cursor-default"
       >
-        <div className="aspect-[16/10] shadow-[0_18px_50px_rgba(2,8,20,.55)] transition-[box-shadow] duration-300 group-hover:shadow-[0_22px_60px_rgba(24,119,255,.2)]">
+        <div data-depth-plane className="aspect-[16/10] shadow-[0_18px_50px_rgba(2,8,20,.55)] transition-[box-shadow] duration-300 group-hover:shadow-[0_22px_60px_rgba(24,119,255,.2)]">
           <Janela projeto={projeto}>
             <MioloJanela projeto={projeto} />
             {abrivel && (
@@ -53,11 +63,16 @@ function CardProjeto({
           {projeto.descricao}
         </p>
       </div>
-    </article>
+    </Reveal>
   );
 }
 
 export default function App() {
+  const heroi = useRef<HTMLElement>(null);
+  const pagina = useRef<HTMLDivElement>(null);
+  useHeroParallax(heroi);
+  useDepthMotion(pagina);
+  const ctaHeroi = useMagnetic<HTMLAnchorElement>();
   const [aba, setAba] = useState<ServicoId>("sites");
   const [aberto, setAberto] = useState<Projeto | null>(null);
 
@@ -66,7 +81,10 @@ export default function App() {
   const aoVivo = projetos.filter((p) => p.url).length;
 
   return (
-    <div className="min-h-screen">
+    <div ref={pagina} className="min-h-screen">
+      <BarraProgresso />
+      <Cursor />
+
       {/* ---------- Cabeçalho ---------- */}
       <header className="fixed inset-x-0 top-0 z-40 border-b border-ivory/12 bg-ink/85 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-[1400px] items-center justify-between px-6 sm:px-10">
@@ -100,6 +118,7 @@ export default function App() {
 
       {/* ---------- Primeira dobra ---------- */}
       <section
+        ref={heroi}
         id="topo"
         className="relative isolate flex min-h-[92svh] items-end overflow-hidden bg-navy pt-16 sm:items-center"
       >
@@ -107,6 +126,7 @@ export default function App() {
           src="/android-vvc.png"
           alt="Android de acabamento preto e azul representando a tecnologia da Viveci"
           fetchPriority="high"
+          data-camada="foto"
           className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[62%] w-full object-cover object-[62%_top] sm:inset-y-0 sm:right-0 sm:left-auto sm:h-full sm:w-[72%] sm:object-[center_top]"
         />
         {/*
@@ -117,14 +137,21 @@ export default function App() {
         */}
         <div
           aria-hidden
+          data-camada="veu"
           className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(2,13,27,.5)_0%,rgba(2,13,27,.28)_24%,rgba(2,13,27,.9)_52%,#020d1b_66%)] sm:bg-[linear-gradient(90deg,rgba(2,13,27,.96)_0%,rgba(2,13,27,.86)_30%,rgba(2,13,27,.2)_60%,transparent_100%)]"
         />
 
-        <div className="mx-auto w-full max-w-[1400px] px-6 pt-[46svh] pb-16 sm:px-10 sm:py-20">
+        <div
+          data-camada="texto"
+          className="mx-auto w-full max-w-[1400px] px-6 pt-[46svh] pb-16 sm:px-10 sm:py-20"
+        >
           <p className="rotulo text-signal-bright">VVC Digital Studio</p>
-          <h1 className="mt-6 max-w-2xl font-[family-name:var(--font-display)] text-[clamp(2rem,5.4vw,3.9rem)] leading-[1.08] tracking-[0.02em] text-ivory">
+          <TextReveal
+            as="h1"
+            className="mt-6 max-w-2xl font-[family-name:var(--font-display)] text-[clamp(2rem,5.4vw,3.9rem)] leading-[1.08] tracking-[0.02em] text-ivory"
+          >
             Projetos que você pode abrir agora.
-          </h1>
+          </TextReveal>
           <p className="mt-6 max-w-lg text-base leading-relaxed text-ivory/75">
             Cada janela abaixo é o site real, rodando aqui dentro. Clique para
             navegar sem sair desta página. {aoVivo} dos {projetos.length}{" "}
@@ -132,6 +159,7 @@ export default function App() {
           </p>
           <div className="mt-9 flex flex-wrap items-center gap-4">
             <a
+              ref={ctaHeroi}
               href="#projetos"
               className="inline-flex min-h-12 items-center gap-4 rounded-full border border-ivory/85 pr-1.5 pl-6 text-sm text-ivory transition-colors duration-200 hover:border-signal-bright hover:text-signal-bright"
             >
@@ -217,10 +245,11 @@ export default function App() {
             aria-labelledby={`aba-${aba}`}
             className="grid gap-x-8 gap-y-14 sm:grid-cols-2 xl:grid-cols-3"
           >
-            {lista.map((projeto) => (
+            {lista.map((projeto, indice) => (
               <CardProjeto
                 key={projeto.nome}
                 projeto={projeto}
+                index={indice}
                 aoAbrir={() => setAberto(projeto)}
               />
             ))}
