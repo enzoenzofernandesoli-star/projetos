@@ -95,8 +95,27 @@ export function Visualizador({
               sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
             />
           ) : (
-            <div className="absolute inset-0 grid place-items-center p-6 text-center">
-              <p className="max-w-sm text-sm text-ivory/75">{projeto.restricao}</p>
+            <div className="absolute inset-0 grid place-items-center bg-ink/72 p-6 text-center backdrop-blur-sm">
+              <div className="max-w-sm">
+                <p className="rotulo text-signal-bright">
+                  {projeto.exclusivo ? "Projeto exclusivo" : "Sem acesso público"}
+                </p>
+                <p className="mt-4 text-lg leading-snug text-ivory">
+                  {projeto.exclusivo
+                    ? "Este site é exclusivo do cliente e não fica aberto ao público."
+                    : projeto.restricao}
+                </p>
+                {projeto.exclusivo && (
+                  <a
+                    href="https://wa.me/5511963755999"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-7 inline-flex min-h-11 items-center rounded-full border border-ivory/55 px-5 text-sm transition-colors duration-200 hover:border-signal-bright hover:text-signal-bright"
+                  >
+                    Quero um assim ↗
+                  </a>
+                )}
+              </div>
             </div>
           )}
         </Janela>

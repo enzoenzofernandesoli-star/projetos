@@ -46,11 +46,18 @@ export type Projeto = {
   /** Motivo de não haver janela ao vivo. Só existe quando `url` está ausente. */
   restricao?: string;
   /**
-   * Item ilustrativo, criado para a aba não ficar vazia. NÃO é trabalho
-   * entregue a cliente. Para tirar todos de uma vez:
+   * Conceito criado para a vitrine. NÃO é trabalho entregue a cliente. Fica
+   * só no dado, sem aparecer para quem visita. Para separar depois:
    * `projetos.filter((p) => !p.ilustrativo)`.
    */
   ilustrativo?: boolean;
+  /** Conceito: abre avisando que é exclusivo, em vez de carregar um site. */
+  exclusivo?: boolean;
+  /** Duas linhas da chamada desenhada na capa. */
+  chamada?: [string, string];
+  /** Arranjo da capa, para as ilustrações não se repetirem. */
+  layout?: "editorial" | "central" | "galeria";
+  paleta?: { fundo: string; campo: string; tinta: string; acento: string };
 };
 
 /**
@@ -158,13 +165,28 @@ export const projetos: Projeto[] = [
     url: "https://apoio-autismo.vercel.app",
   },
   {
-    nome: "Clube do Aluno",
-    tipo: "Área de membros",
+    nome: "Clube Vértice",
+    tipo: "Área de membros · Assinatura",
     descricao:
-      "Área logada para venda de acesso recorrente: aulas, materiais e progresso do assinante.",
+      "Plataforma de acesso recorrente com aulas, materiais e progresso do assinante.",
     servico: "aplicativos",
-    restricao: "Exemplo do que entregamos",
+    exclusivo: true,
     ilustrativo: true,
+    chamada: ["Treine no", "seu ritmo."],
+    layout: "central",
+    paleta: { fundo: "#0a1410", campo: "#162a1f", tinta: "#eef4ee", acento: "#3fbf7f" },
+  },
+  {
+    nome: "Rota Nômade",
+    tipo: "Turismo · Roteiros guiados",
+    descricao:
+      "Aplicativo de roteiros com mapa, reserva e diário de viagem do próprio usuário.",
+    servico: "aplicativos",
+    exclusivo: true,
+    ilustrativo: true,
+    chamada: ["O mundo", "em rota."],
+    layout: "galeria",
+    paleta: { fundo: "#101622", campo: "#1d2b45", tinta: "#f2f4f8", acento: "#ff8a3d" },
   },
 
   // ---------------- Sistemas ----------------
@@ -187,70 +209,103 @@ export const projetos: Projeto[] = [
     restricao: "Acesso restrito — exige login",
   },
   {
-    nome: "Agendamento com confirmação",
-    tipo: "Automação de atendimento",
+    nome: "Pátio Central",
+    tipo: "Gestão de pedidos",
     descricao:
-      "Cliente marca horário pelo site e recebe confirmação e lembrete no WhatsApp, sem ninguém digitar.",
+      "Painel de pedidos com status, responsável e histórico, integrado ao que a casa já usa.",
     servico: "sistemas",
-    restricao: "Exemplo do que entregamos",
+    exclusivo: true,
     ilustrativo: true,
+    chamada: ["Tudo no", "mesmo lugar."],
+    layout: "editorial",
+    paleta: { fundo: "#0d1017", campo: "#1a2030", tinta: "#f4f1e9", acento: "#6f7bff" },
   },
   {
-    nome: "Painel de pedidos",
-    tipo: "Gestão sob medida",
+    nome: "Horário Certo",
+    tipo: "Agendamento automático",
     descricao:
-      "Quadro de pedidos com status, responsável e histórico, integrado ao que o negócio já usa.",
+      "Cliente marca pelo site e recebe confirmação e lembrete no WhatsApp, sem ninguém digitar.",
     servico: "sistemas",
-    restricao: "Exemplo do que entregamos",
+    exclusivo: true,
     ilustrativo: true,
+    chamada: ["Marque", "e esqueça."],
+    layout: "central",
+    paleta: { fundo: "#0b1118", campo: "#16222e", tinta: "#eef3f7", acento: "#27c2a0" },
   },
 
   // ---------------- Visibilidade ----------------
   {
-    nome: "Perfil no Google",
-    tipo: "Google Empresas e Maps",
+    nome: "Casa Terrazza",
+    tipo: "Restaurante · Presença no Google",
     descricao:
-      "Ficha completa, fotos, horário, serviços e avaliações — para o negócio aparecer na busca do bairro.",
+      "Site, ficha do Google e fotos organizadas para o restaurante aparecer nas buscas do bairro.",
     servico: "visibilidade",
-    restricao: "Exemplo do que entregamos",
+    exclusivo: true,
     ilustrativo: true,
+    chamada: ["Mesa posta", "todo dia."],
+    layout: "editorial",
+    paleta: { fundo: "#140f0c", campo: "#2a1d15", tinta: "#f6efe4", acento: "#d9a441" },
   },
   {
-    nome: "SEO local",
-    tipo: "Busca orgânica",
+    nome: "Núcleo Vida",
+    tipo: "Clínica · SEO local",
     descricao:
-      "Estrutura, títulos e conteúdo pensados para as buscas que trazem cliente da região.",
+      "Estrutura e conteúdo pensados para as buscas de quem procura atendimento na região.",
     servico: "visibilidade",
-    restricao: "Exemplo do que entregamos",
+    exclusivo: true,
     ilustrativo: true,
+    chamada: ["Cuidado", "que se acha."],
+    layout: "central",
+    paleta: { fundo: "#0a1218", campo: "#12242e", tinta: "#eef6f8", acento: "#2fb6d9" },
   },
   {
-    nome: "Relatório de resultados",
-    tipo: "Análise mensal",
+    nome: "Ateliê Lumen",
+    tipo: "Fotografia · Portfólio indexado",
     descricao:
-      "Quantas pessoas acharam o site, por onde chegaram e quantas foram para o WhatsApp.",
+      "Galeria leve e indexável, com cada ensaio virando uma porta de entrada na busca.",
     servico: "visibilidade",
-    restricao: "Exemplo do que entregamos",
+    exclusivo: true,
     ilustrativo: true,
+    chamada: ["Luz em", "cada quadro."],
+    layout: "galeria",
+    paleta: { fundo: "#12100f", campo: "#241f1c", tinta: "#f5f1ec", acento: "#c98b5e" },
   },
 
   // ---------------- Suporte ----------------
   {
-    nome: "Manutenção mensal",
-    tipo: "Depois da entrega",
+    nome: "Forja Studio",
+    tipo: "Academia · Manutenção mensal",
     descricao:
-      "Atualização de conteúdo, fotos e preços sempre que o negócio muda. Sem fila e sem chamado.",
+      "Turmas, horários e planos atualizados todo mês, sem o dono precisar abrir nada.",
     servico: "suporte",
-    restricao: "Exemplo do que entregamos",
+    exclusivo: true,
     ilustrativo: true,
+    chamada: ["Força que", "se constrói."],
+    layout: "editorial",
+    paleta: { fundo: "#0e0f12", campo: "#1c1f26", tinta: "#f2f2f4", acento: "#ff5c39" },
   },
   {
-    nome: "Atendimento no WhatsApp",
-    tipo: "Canal direto",
+    nome: "Vinha & Costa",
+    tipo: "Advocacia · Atendimento contínuo",
     descricao:
-      "Falar com quem fez o site, não com um suporte genérico. Ajuste pequeno sai no mesmo dia.",
+      "Ajustes de conteúdo e novas áreas de atuação publicadas no mesmo dia do pedido.",
     servico: "suporte",
-    restricao: "Exemplo do que entregamos",
+    exclusivo: true,
     ilustrativo: true,
+    chamada: ["Defesa", "com método."],
+    layout: "central",
+    paleta: { fundo: "#0b0f14", campo: "#16202b", tinta: "#f1f3f6", acento: "#8fa9c9" },
+  },
+  {
+    nome: "Marés Coworking",
+    tipo: "Coworking · Site vivo",
+    descricao:
+      "Disponibilidade de salas e eventos da semana atualizados sem depender de ninguém.",
+    servico: "suporte",
+    exclusivo: true,
+    ilustrativo: true,
+    chamada: ["Trabalhe", "com vista."],
+    layout: "galeria",
+    paleta: { fundo: "#081218", campo: "#0f2530", tinta: "#eaf5f8", acento: "#35c4c4" },
   },
 ];

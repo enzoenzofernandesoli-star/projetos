@@ -11,7 +11,7 @@ function CardProjeto({
   projeto: Projeto;
   aoAbrir: () => void;
 }) {
-  const abrivel = Boolean(projeto.url);
+  const abrivel = Boolean(projeto.url) || Boolean(projeto.exclusivo);
   return (
     <article className="group">
       <button
@@ -35,7 +35,7 @@ function CardProjeto({
                 </span>
               </span>
             )}
-            {!abrivel && !projeto.ilustrativo && (
+            {!abrivel && (
               <span className="absolute right-2 bottom-2 rounded-md bg-ink/80 px-2 py-1 text-[10px] text-ivory/60">
                 {projeto.restricao}
               </span>
