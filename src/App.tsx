@@ -45,11 +45,6 @@ function CardProjeto({
                 </span>
               </span>
             )}
-            {!abrivel && (
-              <span className="absolute right-2 bottom-2 rounded-md bg-ink/80 px-2 py-1 text-[10px] text-ivory/60">
-                {projeto.restricao}
-              </span>
-            )}
           </Janela>
         </div>
       </button>

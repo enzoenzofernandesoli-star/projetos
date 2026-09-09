@@ -45,6 +45,8 @@ export type Projeto = {
   url?: string;
   /** Motivo de não haver janela ao vivo. Só existe quando `url` está ausente. */
   restricao?: string;
+  /** Endereço do projeto restrito: existe, mas não abre para o público. */
+  dominio?: string;
   /**
    * Conceito criado para a vitrine. NÃO é trabalho entregue a cliente. Fica
    * só no dado, sem aparecer para quem visita. Para separar depois:
@@ -237,6 +239,7 @@ export const projetos: Projeto[] = [
     servico: "sistemas",
     capa: "/capas/agenda-viveci.jpg",
     restricao: "Acesso restrito — exige login",
+    dominio: "agenda-viveci.vercel.app",
   },
   {
     nome: "Pátio Central",
