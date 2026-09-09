@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #05080c;
+  --color-navy: #020d1b;
+  --color-electric: #06172b;
+  --color-atlantic: #0b223a;
+  --color-ivory: #f4f1e9;
+  --color-steel: #91a8c0;
+  --color-signal: #1877ff;
+  --color-signal-bright: #57a9ff;
+
+  --font-display: Michroma, "Instrument Sans", system-ui, sans-serif;
+  --font-sans: "Instrument Sans", system-ui, sans-serif;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  background: var(--color-ink);
+  color: var(--color-ivory);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Rótulos da marca: corpo pequeno com espaçamento largo entre letras. */
+.rotulo {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-indent: 0.2em;
+  text-transform: uppercase;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
