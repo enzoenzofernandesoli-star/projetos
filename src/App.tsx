@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
-import { categorias, projetos, type Projeto } from "./projetos";
-import { Janela } from "./components/Janela";
+import { projetos, servicos, type Projeto, type ServicoId } from "./projetos";
+import { Janela, MioloJanela } from "./components/Janela";
 import { Visualizador } from "./components/Visualizador";
 import { LogoVVC } from "./components/LogoVVC";
 
@@ -27,12 +27,7 @@ function CardProjeto({
       >
         <div className="aspect-[16/10] shadow-[0_18px_50px_rgba(2,8,20,.55)] transition-[box-shadow] duration-300 group-hover:shadow-[0_22px_60px_rgba(24,119,255,.2)]">
           <Janela projeto={projeto}>
-            <img
-              src={projeto.capa}
-              alt={`Página inicial do projeto ${projeto.nome}`}
-              loading="lazy"
-              className="absolute inset-0 size-full object-cover object-top"
-            />
+            <MioloJanela projeto={projeto} />
             {abrivel && (
               <span className="pointer-events-none absolute inset-0 grid place-items-center bg-ink/55 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                 <span className="rounded-full border border-signal-bright/70 bg-ink/70 px-5 py-2.5 text-xs text-signal-bright">
@@ -40,7 +35,7 @@ function CardProjeto({
                 </span>
               </span>
             )}
-            {!abrivel && (
+            {!abrivel && !projeto.ilustrativo && (
               <span className="absolute right-2 bottom-2 rounded-md bg-ink/80 px-2 py-1 text-[10px] text-ivory/60">
                 {projeto.restricao}
               </span>
@@ -63,15 +58,11 @@ function CardProjeto({
 }
 
 export default function App() {
-  const [filtro, setFiltro] = useState<string>("Todos");
+  const [aba, setAba] = useState<ServicoId>("sites");
   const [aberto, setAberto] = useState<Projeto | null>(null);
 
-  const lista = useMemo(
-    () =>
-      filtro === "Todos" ? projetos : projetos.filter((p) => p.categoria === filtro),
-    [filtro]
-  );
-
+  const lista = useMemo(() => projetos.filter((p) => p.servico === aba), [aba]);
+  const servicoAtual = servicos.find((s) => s.id === aba)!;
   const aoVivo = projetos.filter((p) => p.url).length;
 
   return (
@@ -166,31 +157,66 @@ export default function App() {
         className="bg-[radial-gradient(ellipse_60%_40%_at_50%_0%,rgba(24,119,255,.12),transparent_60%)]"
       >
         <div className="mx-auto max-w-[1400px] px-6 pt-16 pb-24 sm:px-10 sm:pt-20">
-          <nav
-            className="mb-12 flex flex-wrap gap-2"
-            aria-label="Filtrar por tipo"
+          {/* Abas por serviço. São botões com role="tab": as setas do teclado
+              trocam de aba, como o usuário espera de uma barra de abas. */}
+          <div
+            role="tablist"
+            aria-label="Serviços"
+            className="-mx-6 mb-2 flex gap-1 overflow-x-auto px-6 sm:mx-0 sm:px-0"
+            onKeyDown={(evento) => {
+              const passo =
+                evento.key === "ArrowRight" ? 1 : evento.key === "ArrowLeft" ? -1 : 0;
+              if (!passo) return;
+              evento.preventDefault();
+              const atual = servicos.findIndex((s) => s.id === aba);
+              const proximo = servicos[(atual + passo + servicos.length) % servicos.length];
+              setAba(proximo.id);
+              document.getElementById(`aba-${proximo.id}`)?.focus();
+            }}
           >
-            {categorias.map((categoria) => {
-              const ativo = filtro === categoria;
+            {servicos.map((servico) => {
+              const ativo = aba === servico.id;
+              const quantos = projetos.filter((p) => p.servico === servico.id).length;
               return (
                 <button
-                  key={categoria}
+                  key={servico.id}
+                  id={`aba-${servico.id}`}
+                  role="tab"
                   type="button"
-                  onClick={() => setFiltro(categoria)}
-                  aria-pressed={ativo}
-                  className={`min-h-11 rounded-full border px-4 text-xs transition-colors duration-200 ${
+                  aria-selected={ativo}
+                  aria-controls="painel-servico"
+                  tabIndex={ativo ? 0 : -1}
+                  onClick={() => setAba(servico.id)}
+                  className={`relative flex min-h-12 flex-none items-center gap-2 border-b-2 px-4 text-sm whitespace-nowrap transition-colors duration-200 ${
                     ativo
-                      ? "border-signal-bright bg-signal/12 text-signal-bright"
-                      : "border-steel/30 text-ivory/70 hover:border-steel/60 hover:text-ivory"
+                      ? "border-signal-bright text-ivory"
+                      : "border-transparent text-ivory/55 hover:text-ivory/85"
                   }`}
                 >
-                  {categoria}
+                  {servico.nome}
+                  <span
+                    className={`rounded-full px-1.5 py-0.5 text-[10px] ${
+                      ativo ? "bg-signal/20 text-signal-bright" : "bg-ivory/8 text-ivory/45"
+                    }`}
+                  >
+                    {quantos}
+                  </span>
                 </button>
               );
             })}
-          </nav>
+          </div>
+          <div className="mb-11 border-t border-steel/18 pt-5">
+            <p className="max-w-xl text-sm leading-relaxed text-ivory/65">
+              {servicoAtual.resumo}
+            </p>
+          </div>
 
-          <div className="grid gap-x-8 gap-y-14 sm:grid-cols-2 xl:grid-cols-3">
+          <div
+            id="painel-servico"
+            role="tabpanel"
+            aria-labelledby={`aba-${aba}`}
+            className="grid gap-x-8 gap-y-14 sm:grid-cols-2 xl:grid-cols-3"
+          >
             {lista.map((projeto) => (
               <CardProjeto
                 key={projeto.nome}

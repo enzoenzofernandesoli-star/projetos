@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import type { Projeto } from "../projetos";
-import { Janela, dominio } from "./Janela";
+import { Janela, MioloJanela, dominio } from "./Janela";
 
 /**
  * Abre o projeto ao vivo dentro da página, numa janela grande.
@@ -76,14 +76,14 @@ export function Visualizador({
 
       <div className="mx-auto min-h-0 w-full max-w-[1400px] flex-1">
         <Janela projeto={projeto} alturaBarra="h-11">
-          <img
-            src={projeto.capa}
-            alt=""
+          <div
             aria-hidden
-            className={`absolute inset-0 size-full object-cover object-top transition-opacity duration-500 ${
+            className={`absolute inset-0 transition-opacity duration-500 ${
               carregado ? "opacity-0" : "opacity-60"
             }`}
-          />
+          >
+            <MioloJanela projeto={projeto} />
+          </div>
           {projeto.url ? (
             <iframe
               src={projeto.url}
