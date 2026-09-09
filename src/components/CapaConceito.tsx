@@ -1,11 +1,15 @@
 import type { Projeto } from "../projetos";
 
 /**
- * Capa dos projetos conceituais: um mock de página desenhado em SVG, com a
- * paleta do próprio conceito. Não é captura de site que existe — é ilustração.
+ * Capa dos projetos conceituais: uma composição de página, com foto real de
+ * fundo, a paleta do conceito e a fonte dele.
  *
- * O desenho muda de arranjo conforme `layout`, para as capas não parecerem a
- * mesma coisa repintada.
+ * As fotos vêm de banco com licença livre para uso comercial e ficam
+ * hospedadas aqui, em `public/conceitos` — nada é carregado de terceiro em
+ * tempo de execução.
+ *
+ * Cada conceito tem a própria fonte, como teria um site de verdade: uma
+ * barbearia não usa a mesma tipografia de um escritório de advocacia.
  */
 export function CapaConceito({ projeto }: { projeto: Projeto }) {
   const p = projeto.paleta ?? {
@@ -15,101 +19,96 @@ export function CapaConceito({ projeto }: { projeto: Projeto }) {
     acento: "#1877ff",
   };
   const layout = projeto.layout ?? "editorial";
-  /*
-   * O id vira referência dentro do SVG (`url(#...)`). Nome com espaço ou
-   * acento quebra a referência em silêncio e o bloco pinta de preto — foi o
-   * que aconteceu na primeira versão.
-   */
-  const id = `${layout}-${projeto.nome
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "")}`;
+  const fonte = projeto.fonte ?? "var(--font-display)";
+  const [linha1, linha2] = projeto.chamada ?? ["", ""];
 
   return (
-    <svg
-      viewBox="0 0 800 470"
-      preserveAspectRatio="xMidYMid slice"
-      className="absolute inset-0 size-full"
-      role="img"
-      aria-label={`Composição visual do projeto ${projeto.nome}`}
-    >
-      <defs>
-        <linearGradient id={`f-${id}`} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor={p.campo} />
-          <stop offset="100%" stopColor={p.fundo} />
-        </linearGradient>
-        <linearGradient id={`v-${id}`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor={p.acento} stopOpacity="0.34" />
-          <stop offset="100%" stopColor={p.fundo} stopOpacity="0.05" />
-        </linearGradient>
-      </defs>
-
-      <rect width="800" height="470" fill={`url(#f-${id})`} />
-
-      {/* barra de navegação */}
-      <g opacity="0.85">
-        <text x="44" y="46" fill={p.tinta} fontSize="15" letterSpacing="4" fontFamily="Michroma, sans-serif">
-          {projeto.nome.toUpperCase().slice(0, 16)}
-        </text>
-        <rect x="560" y="34" width="52" height="6" rx="3" fill={p.tinta} opacity="0.4" />
-        <rect x="626" y="34" width="52" height="6" rx="3" fill={p.tinta} opacity="0.4" />
-        <rect x="692" y="26" width="66" height="24" rx="12" fill={p.acento} opacity="0.9" />
-      </g>
-
-      {layout === "editorial" && (
-        <>
-          <rect x="430" y="96" width="330" height="330" rx="10" fill={`url(#v-${id})`} />
-          <rect x="430" y="96" width="330" height="330" rx="10" fill="none" stroke={p.acento} strokeOpacity="0.35" />
-          <text x="44" y="200" fill={p.tinta} fontSize="52" fontFamily="Michroma, sans-serif">
-            {projeto.chamada?.[0]}
-          </text>
-          <text x="44" y="262" fill={p.tinta} fontSize="52" fontFamily="Michroma, sans-serif">
-            {projeto.chamada?.[1]}
-          </text>
-          <rect x="44" y="300" width="300" height="7" rx="3.5" fill={p.tinta} opacity="0.28" />
-          <rect x="44" y="322" width="230" height="7" rx="3.5" fill={p.tinta} opacity="0.2" />
-          <rect x="44" y="366" width="182" height="42" rx="21" fill={p.acento} />
-        </>
+    <div className="absolute inset-0 overflow-hidden" style={{ background: p.fundo }}>
+      {projeto.imagem && (
+        <img
+          src={projeto.imagem}
+          alt=""
+          aria-hidden
+          loading="lazy"
+          className="absolute inset-0 size-full object-cover"
+        />
       )}
 
-      {layout === "central" && (
-        <>
-          <circle cx="400" cy="250" r="180" fill={`url(#v-${id})`} />
-          <text x="400" y="228" textAnchor="middle" fill={p.tinta} fontSize="46" fontFamily="Michroma, sans-serif">
-            {projeto.chamada?.[0]}
-          </text>
-          <text x="400" y="286" textAnchor="middle" fill={p.tinta} fontSize="46" fontFamily="Michroma, sans-serif">
-            {projeto.chamada?.[1]}
-          </text>
-          <rect x="300" y="330" width="200" height="7" rx="3.5" fill={p.tinta} opacity="0.24" />
-          <rect x="309" y="378" width="182" height="42" rx="21" fill={p.acento} />
-        </>
-      )}
+      {/* Véu na cor do conceito: a foto vira fundo, o texto ganha leitura. */}
+      <div
+        aria-hidden
+        className="absolute inset-0"
+        style={{
+          background:
+            layout === "central"
+              ? `radial-gradient(ellipse 74% 74% at 50% 50%, ${p.fundo}f2, ${p.fundo}cc 62%, ${p.fundo}f7)`
+              : `linear-gradient(100deg, ${p.fundo}f7 0%, ${p.fundo}e0 42%, ${p.fundo}66 72%, ${p.fundo}99 100%)`,
+        }}
+      />
+
+      {/* barra de navegação do site fictício */}
+      <div className="absolute inset-x-0 top-0 flex items-center justify-between px-[5%] py-[5%]">
+        <span
+          className="truncate text-[clamp(7px,1.5cqw,11px)] tracking-[0.24em] uppercase"
+          style={{ color: p.tinta, fontFamily: fonte }}
+        >
+          {projeto.nome}
+        </span>
+        <span className="flex items-center gap-[6%]" aria-hidden>
+          <span className="h-[3px] w-[26px] rounded-full opacity-40" style={{ background: p.tinta }} />
+          <span className="h-[3px] w-[26px] rounded-full opacity-40" style={{ background: p.tinta }} />
+          <span
+            className="h-[16px] w-[42px] rounded-full"
+            style={{ background: p.acento }}
+          />
+        </span>
+      </div>
+
+      {/* chamada */}
+      <div
+        className={`absolute inset-0 flex flex-col justify-center px-[6%] ${
+          layout === "central" ? "items-center text-center" : "items-start"
+        } ${layout === "galeria" ? "justify-start pt-[16%]" : ""}`}
+      >
+        <p
+          className="text-[clamp(15px,6cqw,44px)] leading-[1.06]"
+          style={{ color: p.tinta, fontFamily: fonte }}
+        >
+          {linha1}
+          <br />
+          {linha2}
+        </p>
+
+        {layout !== "galeria" && (
+          <>
+            <span
+              className="mt-[4%] h-[3px] w-[38%] rounded-full opacity-25"
+              style={{ background: p.tinta }}
+              aria-hidden
+            />
+            <span
+              className="mt-[5%] block h-[9%] min-h-[18px] w-[34%] rounded-full"
+              style={{ background: p.acento }}
+              aria-hidden
+            />
+          </>
+        )}
+      </div>
 
       {layout === "galeria" && (
-        <>
-          <text x="44" y="150" fill={p.tinta} fontSize="46" fontFamily="Michroma, sans-serif">
-            {projeto.chamada?.[0]}
-          </text>
-          <text x="44" y="204" fill={p.tinta} fontSize="46" fontFamily="Michroma, sans-serif">
-            {projeto.chamada?.[1]}
-          </text>
+        <div className="absolute inset-x-[6%] bottom-[7%] flex gap-[3%]" aria-hidden>
           {[0, 1, 2].map((i) => (
-            <rect
+            <span
               key={i}
-              x={44 + i * 245}
-              y={252}
-              width="222"
-              height="196"
-              rx="9"
-              fill={`url(#v-${id})`}
-              stroke={p.acento}
-              strokeOpacity="0.3"
+              className="h-[70px] flex-1 rounded-md border"
+              style={{
+                borderColor: `${p.acento}55`,
+                background: `linear-gradient(180deg, ${p.acento}26, transparent)`,
+              }}
             />
           ))}
-        </>
+        </div>
       )}
-    </svg>
+    </div>
   );
 }

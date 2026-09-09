@@ -57,6 +57,10 @@ export type Projeto = {
   chamada?: [string, string];
   /** Arranjo da capa, para as ilustrações não se repetirem. */
   layout?: "editorial" | "central" | "galeria";
+  /** Foto de fundo da capa. Licença livre para uso comercial. */
+  imagem?: string;
+  /** Fonte do conceito: cada um tem a sua, como teria um site de verdade. */
+  fonte?: string;
   paleta?: { fundo: string; campo: string; tinta: string; acento: string };
 };
 
@@ -171,6 +175,8 @@ export const projetos: Projeto[] = [
       "Plataforma de acesso recorrente com aulas, materiais e progresso do assinante.",
     servico: "aplicativos",
     exclusivo: true,
+    imagem: "/conceitos/p450.jpg",
+    fonte: "'Bebas Neue', sans-serif",
     ilustrativo: true,
     chamada: ["Treine no", "seu ritmo."],
     layout: "central",
@@ -183,6 +189,8 @@ export const projetos: Projeto[] = [
       "Aplicativo de roteiros com mapa, reserva e diário de viagem do próprio usuário.",
     servico: "aplicativos",
     exclusivo: true,
+    imagem: "/conceitos/p1015.jpg",
+    fonte: "'Sora', sans-serif",
     ilustrativo: true,
     chamada: ["O mundo", "em rota."],
     layout: "galeria",
@@ -215,6 +223,8 @@ export const projetos: Projeto[] = [
       "Painel de pedidos com status, responsável e histórico, integrado ao que a casa já usa.",
     servico: "sistemas",
     exclusivo: true,
+    imagem: "/conceitos/p348.jpg",
+    fonte: "'IBM Plex Sans', sans-serif",
     ilustrativo: true,
     chamada: ["Tudo no", "mesmo lugar."],
     layout: "editorial",
@@ -227,6 +237,8 @@ export const projetos: Projeto[] = [
       "Cliente marca pelo site e recebe confirmação e lembrete no WhatsApp, sem ninguém digitar.",
     servico: "sistemas",
     exclusivo: true,
+    imagem: "/conceitos/p431.jpg",
+    fonte: "'DM Sans', sans-serif",
     ilustrativo: true,
     chamada: ["Marque", "e esqueça."],
     layout: "central",
@@ -241,6 +253,8 @@ export const projetos: Projeto[] = [
       "Site, ficha do Google e fotos organizadas para o restaurante aparecer nas buscas do bairro.",
     servico: "visibilidade",
     exclusivo: true,
+    imagem: "/conceitos/p292.jpg",
+    fonte: "'Playfair Display', serif",
     ilustrativo: true,
     chamada: ["Mesa posta", "todo dia."],
     layout: "editorial",
@@ -253,6 +267,8 @@ export const projetos: Projeto[] = [
       "Estrutura e conteúdo pensados para as buscas de quem procura atendimento na região.",
     servico: "visibilidade",
     exclusivo: true,
+    imagem: "/conceitos/p1027.jpg",
+    fonte: "'Outfit', sans-serif",
     ilustrativo: true,
     chamada: ["Cuidado", "que se acha."],
     layout: "central",
@@ -265,6 +281,8 @@ export const projetos: Projeto[] = [
       "Galeria leve e indexável, com cada ensaio virando uma porta de entrada na busca.",
     servico: "visibilidade",
     exclusivo: true,
+    imagem: "/conceitos/p823.jpg",
+    fonte: "'Cormorant Garamond', serif",
     ilustrativo: true,
     chamada: ["Luz em", "cada quadro."],
     layout: "galeria",
@@ -279,6 +297,8 @@ export const projetos: Projeto[] = [
       "Turmas, horários e planos atualizados todo mês, sem o dono precisar abrir nada.",
     servico: "suporte",
     exclusivo: true,
+    imagem: "/conceitos/p1058.jpg",
+    fonte: "'Archivo Black', sans-serif",
     ilustrativo: true,
     chamada: ["Força que", "se constrói."],
     layout: "editorial",
@@ -291,6 +311,8 @@ export const projetos: Projeto[] = [
       "Ajustes de conteúdo e novas áreas de atuação publicadas no mesmo dia do pedido.",
     servico: "suporte",
     exclusivo: true,
+    imagem: "/conceitos/p1076.jpg",
+    fonte: "'Libre Baskerville', serif",
     ilustrativo: true,
     chamada: ["Defesa", "com método."],
     layout: "central",
@@ -303,6 +325,8 @@ export const projetos: Projeto[] = [
       "Disponibilidade de salas e eventos da semana atualizados sem depender de ninguém.",
     servico: "suporte",
     exclusivo: true,
+    imagem: "/conceitos/p366.jpg",
+    fonte: "'Space Grotesk', sans-serif",
     ilustrativo: true,
     chamada: ["Trabalhe", "com vista."],
     layout: "galeria",

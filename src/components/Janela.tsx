@@ -42,7 +42,7 @@ export function Janela({
           </span>
         </div>
       </div>
-      <div className="relative min-h-0 flex-1 bg-ink">{children}</div>
+      <div className="relative min-h-0 flex-1 bg-ink [container-type:size]">{children}</div>
     </div>
   );
 }
