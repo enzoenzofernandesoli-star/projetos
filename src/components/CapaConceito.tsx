@@ -1,15 +1,17 @@
 import type { Projeto } from "../projetos";
 
 /**
- * Capa dos projetos conceituais: uma composição de página, com foto real de
- * fundo, a paleta do conceito e a fonte dele.
+ * Capa dos projetos conceituais: a primeira dobra inteira de um site, montada
+ * em HTML — menu, chamada, apoio, dois botões e a linha de prova.
+ *
+ * Tudo dimensionado em `cqw`, unidade do container: a mesma composição serve
+ * ao cartão de 400px do grid e à janela grande do visualizador, sem dois
+ * conjuntos de tamanhos.
  *
  * As fotos vêm de banco com licença livre para uso comercial e ficam
- * hospedadas aqui, em `public/conceitos` — nada é carregado de terceiro em
- * tempo de execução.
- *
- * Cada conceito tem a própria fonte, como teria um site de verdade: uma
- * barbearia não usa a mesma tipografia de um escritório de advocacia.
+ * hospedadas em `public/conceitos` — nada é carregado de terceiro em tempo de
+ * execução. Cada conceito tem a própria fonte: uma barbearia não usa a mesma
+ * tipografia de um escritório de advocacia.
  */
 export function CapaConceito({ projeto }: { projeto: Projeto }) {
   const p = projeto.paleta ?? {
@@ -18,12 +20,17 @@ export function CapaConceito({ projeto }: { projeto: Projeto }) {
     tinta: "#f4f1e9",
     acento: "#1877ff",
   };
-  const layout = projeto.layout ?? "editorial";
   const fonte = projeto.fonte ?? "var(--font-display)";
+  const layout = projeto.layout ?? "editorial";
+  const centro = layout === "central";
   const [linha1, linha2] = projeto.chamada ?? ["", ""];
+  const pagina = projeto.pagina;
 
   return (
-    <div className="absolute inset-0 overflow-hidden" style={{ background: p.fundo }}>
+    <div
+      className="absolute inset-0 overflow-hidden"
+      style={{ background: p.fundo, color: p.tinta }}
+    >
       {projeto.imagem && (
         <img
           src={projeto.imagem}
@@ -34,81 +41,94 @@ export function CapaConceito({ projeto }: { projeto: Projeto }) {
         />
       )}
 
-      {/* Véu na cor do conceito: a foto vira fundo, o texto ganha leitura. */}
+      {/* Véu na cor do conceito. Sem ele a foto ganha do texto. */}
       <div
         aria-hidden
         className="absolute inset-0"
         style={{
-          background:
-            layout === "central"
-              ? `radial-gradient(ellipse 74% 74% at 50% 50%, ${p.fundo}f2, ${p.fundo}cc 62%, ${p.fundo}f7)`
-              : `linear-gradient(100deg, ${p.fundo}f7 0%, ${p.fundo}e0 42%, ${p.fundo}66 72%, ${p.fundo}99 100%)`,
+          background: centro
+            ? `radial-gradient(ellipse 86% 86% at 50% 46%, ${p.fundo}e6, ${p.fundo}f2 58%, ${p.fundo}fa)`
+            : `linear-gradient(96deg, ${p.fundo}fa 0%, ${p.fundo}ee 38%, ${p.fundo}80 68%, ${p.fundo}b3 100%)`,
         }}
       />
 
-      {/* barra de navegação do site fictício */}
-      <div className="absolute inset-x-0 top-0 flex items-center justify-between px-[5%] py-[5%]">
+      {/* ---- barra de navegação ---- */}
+      <header className="absolute inset-x-0 top-0 flex items-center justify-between gap-[3cqw] px-[5cqw] py-[3.2cqw]">
         <span
-          className="truncate text-[clamp(7px,1.5cqw,11px)] tracking-[0.24em] uppercase"
-          style={{ color: p.tinta, fontFamily: fonte }}
+          className="shrink-0 text-[2.4cqw] tracking-[0.22em] whitespace-nowrap uppercase"
+          style={{ fontFamily: fonte }}
         >
           {projeto.nome}
         </span>
-        <span className="flex items-center gap-[6%]" aria-hidden>
-          <span className="h-[3px] w-[26px] rounded-full opacity-40" style={{ background: p.tinta }} />
-          <span className="h-[3px] w-[26px] rounded-full opacity-40" style={{ background: p.tinta }} />
-          <span
-            className="h-[16px] w-[42px] rounded-full"
-            style={{ background: p.acento }}
-          />
+        <nav className="flex min-w-0 items-center gap-[2.6cqw] overflow-hidden text-[1.9cqw] opacity-75">
+          {pagina?.menu.map((item) => (
+            <span key={item} className="whitespace-nowrap">
+              {item}
+            </span>
+          ))}
+        </nav>
+        <span
+          className="hidden rounded-full px-[2.4cqw] py-[1.1cqw] text-[1.9cqw] whitespace-nowrap sm:inline"
+          style={{ background: p.acento, color: p.fundo }}
+        >
+          {pagina?.botoes[0]}
         </span>
-      </div>
+      </header>
 
-      {/* chamada */}
+      {/* ---- primeira dobra ---- */}
       <div
-        className={`absolute inset-0 flex flex-col justify-center px-[6%] ${
-          layout === "central" ? "items-center text-center" : "items-start"
-        } ${layout === "galeria" ? "justify-start pt-[16%]" : ""}`}
+        className={`absolute inset-x-0 top-[12cqw] bottom-[8cqw] flex flex-col justify-center px-[5cqw] ${
+          centro ? "items-center text-center" : "items-start"
+        }`}
       >
-        <p
-          className="text-[clamp(15px,6cqw,44px)] leading-[1.06]"
-          style={{ color: p.tinta, fontFamily: fonte }}
+        <span
+          className="text-[1.9cqw] tracking-[0.26em] uppercase"
+          style={{ color: p.acento }}
+        >
+          {pagina?.kicker}
+        </span>
+
+        <h3
+          className="mt-[2cqw] text-[6.6cqw] leading-[1.04]"
+          style={{ fontFamily: fonte }}
         >
           {linha1}
           <br />
           {linha2}
+        </h3>
+
+        <p
+          className={`mt-[2.2cqw] text-[2.2cqw] leading-snug opacity-80 ${
+            centro ? "max-w-[70cqw]" : "max-w-[52cqw]"
+          }`}
+        >
+          {pagina?.sub}
         </p>
 
-        {layout !== "galeria" && (
-          <>
-            <span
-              className="mt-[4%] h-[3px] w-[38%] rounded-full opacity-25"
-              style={{ background: p.tinta }}
-              aria-hidden
-            />
-            <span
-              className="mt-[5%] block h-[9%] min-h-[18px] w-[34%] rounded-full"
-              style={{ background: p.acento }}
-              aria-hidden
-            />
-          </>
-        )}
+        <div className="mt-[2.8cqw] flex items-center gap-[2cqw]">
+          <span
+            className="rounded-full px-[3.4cqw] py-[1.5cqw] text-[2.1cqw] whitespace-nowrap"
+            style={{ background: p.acento, color: p.fundo }}
+          >
+            {pagina?.botoes[0]}
+          </span>
+          <span
+            className="rounded-full border px-[3.4cqw] py-[1.5cqw] text-[2.1cqw] whitespace-nowrap"
+            style={{ borderColor: `${p.tinta}66` }}
+          >
+            {pagina?.botoes[1]}
+          </span>
+        </div>
       </div>
 
-      {layout === "galeria" && (
-        <div className="absolute inset-x-[6%] bottom-[7%] flex gap-[3%]" aria-hidden>
-          {[0, 1, 2].map((i) => (
-            <span
-              key={i}
-              className="h-[70px] flex-1 rounded-md border"
-              style={{
-                borderColor: `${p.acento}55`,
-                background: `linear-gradient(180deg, ${p.acento}26, transparent)`,
-              }}
-            />
-          ))}
-        </div>
-      )}
+      {/* ---- linha de prova, rente ao pé da dobra ---- */}
+      <p
+        className={`absolute inset-x-0 bottom-[3cqw] px-[5cqw] text-[1.9cqw] opacity-60 ${
+          centro ? "text-center" : ""
+        }`}
+      >
+        {pagina?.prova}
+      </p>
     </div>
   );
 }

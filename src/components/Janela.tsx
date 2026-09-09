@@ -1,6 +1,19 @@
 import type { Projeto } from "../projetos";
 import { CapaConceito } from "./CapaConceito";
 
+/**
+ * Nome do conceito virado domínio. O acento precisa ser decomposto antes de
+ * limpar: sem isso "Horário" saía "horrio" e "Núcleo" saía "ncleo", porque a
+ * letra acentuada caía junto com a pontuação.
+ */
+export function dominioDe(nome: string) {
+  return nome
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "");
+}
+
 /** Só o domínio, que é o que a barra de endereço de verdade mostra em destaque. */
 export function dominio(url: string) {
   return url.replace(/^https?:\/\//, "").replace(/\/$/, "");
@@ -37,12 +50,12 @@ export function Janela({
             {projeto.url
               ? dominio(projeto.url)
               : projeto.exclusivo
-                ? `${projeto.nome.toLowerCase().replace(/[^a-z0-9]+/g, "")}.com.br`
+                ? `${dominioDe(projeto.nome)}.com.br`
                 : projeto.restricao}
           </span>
         </div>
       </div>
-      <div className="relative min-h-0 flex-1 bg-ink [container-type:size]">{children}</div>
+      <div className="relative min-h-0 flex-1 bg-ink [container-type:inline-size]">{children}</div>
     </div>
   );
 }

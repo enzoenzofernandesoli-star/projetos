@@ -61,6 +61,14 @@ export type Projeto = {
   imagem?: string;
   /** Fonte do conceito: cada um tem a sua, como teria um site de verdade. */
   fonte?: string;
+  /** Conteúdo da página fictícia, para a capa parecer um site pronto. */
+  pagina?: {
+    menu: string[];
+    kicker: string;
+    sub: string;
+    botoes: [string, string];
+    prova: string;
+  };
   paleta?: { fundo: string; campo: string; tinta: string; acento: string };
 };
 
@@ -177,6 +185,13 @@ export const projetos: Projeto[] = [
     exclusivo: true,
     imagem: "/conceitos/p450.jpg",
     fonte: "'Bebas Neue', sans-serif",
+    pagina: {
+      menu: ["Aulas", "Trilhas", "Comunidade", "Planos"],
+      kicker: "Área de membros",
+      sub: "Aulas novas toda semana, no computador ou no celular.",
+      botoes: ["Entrar", "Assinar agora"],
+      prova: "1.200 assinantes ativos",
+    },
     ilustrativo: true,
     chamada: ["Treine no", "seu ritmo."],
     layout: "central",
@@ -191,6 +206,13 @@ export const projetos: Projeto[] = [
     exclusivo: true,
     imagem: "/conceitos/p1015.jpg",
     fonte: "'Sora', sans-serif",
+    pagina: {
+      menu: ["Roteiros", "Destinos", "Diário", "Ajuda"],
+      kicker: "Roteiros guiados",
+      sub: "Itinerário pronto, mapa que funciona sem sinal e diário no bolso.",
+      botoes: ["Ver roteiros", "Baixar o app"],
+      prova: "Disponível para Android e iPhone",
+    },
     ilustrativo: true,
     chamada: ["O mundo", "em rota."],
     layout: "galeria",
@@ -225,6 +247,13 @@ export const projetos: Projeto[] = [
     exclusivo: true,
     imagem: "/conceitos/p348.jpg",
     fonte: "'IBM Plex Sans', sans-serif",
+    pagina: {
+      menu: ["Painel", "Pedidos", "Equipe", "Relatórios"],
+      kicker: "Gestão de pedidos",
+      sub: "Pedido, status e responsável num quadro que a equipe entende.",
+      botoes: ["Entrar no painel", "Como funciona"],
+      prova: "Integra com o que a casa já usa",
+    },
     ilustrativo: true,
     chamada: ["Tudo no", "mesmo lugar."],
     layout: "editorial",
@@ -239,6 +268,13 @@ export const projetos: Projeto[] = [
     exclusivo: true,
     imagem: "/conceitos/p431.jpg",
     fonte: "'DM Sans', sans-serif",
+    pagina: {
+      menu: ["Serviços", "Horários", "Profissionais", "Contato"],
+      kicker: "Agendamento online",
+      sub: "O cliente escolhe o horário e o WhatsApp confirma sozinho.",
+      botoes: ["Agendar agora", "Ver horários"],
+      prova: "Confirmação automática no WhatsApp",
+    },
     ilustrativo: true,
     chamada: ["Marque", "e esqueça."],
     layout: "central",
@@ -255,6 +291,13 @@ export const projetos: Projeto[] = [
     exclusivo: true,
     imagem: "/conceitos/p292.jpg",
     fonte: "'Playfair Display', serif",
+    pagina: {
+      menu: ["A casa", "Cardápio", "Reservas", "Contato"],
+      kicker: "Pinheiros · São Paulo",
+      sub: "Cozinha de bairro com fogo, tempo e ingrediente de feira.",
+      botoes: ["Reservar mesa", "Ver o cardápio"],
+      prova: "4,8 no Google · 312 avaliações",
+    },
     ilustrativo: true,
     chamada: ["Mesa posta", "todo dia."],
     layout: "editorial",
@@ -269,6 +312,13 @@ export const projetos: Projeto[] = [
     exclusivo: true,
     imagem: "/conceitos/p1027.jpg",
     fonte: "'Outfit', sans-serif",
+    pagina: {
+      menu: ["A clínica", "Especialidades", "Equipe", "Contato"],
+      kicker: "Saúde integrada",
+      sub: "Equipe multidisciplinar, agenda aberta e acompanhamento de verdade.",
+      botoes: ["Agendar consulta", "Especialidades"],
+      prova: "4,9 no Google · 187 avaliações",
+    },
     ilustrativo: true,
     chamada: ["Cuidado", "que se acha."],
     layout: "central",
@@ -283,6 +333,13 @@ export const projetos: Projeto[] = [
     exclusivo: true,
     imagem: "/conceitos/p823.jpg",
     fonte: "'Cormorant Garamond', serif",
+    pagina: {
+      menu: ["Ensaios", "Editorial", "Sobre", "Contato"],
+      kicker: "Ensaios e editoriais",
+      sub: "Retrato, casamento e marca, com direção de arte do começo ao fim.",
+      botoes: ["Ver portfólio", "Pedir orçamento"],
+      prova: "Mais de 400 ensaios entregues",
+    },
     ilustrativo: true,
     chamada: ["Luz em", "cada quadro."],
     layout: "galeria",
@@ -299,6 +356,13 @@ export const projetos: Projeto[] = [
     exclusivo: true,
     imagem: "/conceitos/p1058.jpg",
     fonte: "'Archivo Black', sans-serif",
+    pagina: {
+      menu: ["Modalidades", "Planos", "Horários", "Contato"],
+      kicker: "Treino funcional",
+      sub: "Turmas pequenas, professor junto e evolução que dá para medir.",
+      botoes: ["Aula experimental", "Ver planos"],
+      prova: "4,9 no Google · 240 alunos ativos",
+    },
     ilustrativo: true,
     chamada: ["Força que", "se constrói."],
     layout: "editorial",
@@ -313,6 +377,13 @@ export const projetos: Projeto[] = [
     exclusivo: true,
     imagem: "/conceitos/p1076.jpg",
     fonte: "'Libre Baskerville', serif",
+    pagina: {
+      menu: ["Escritório", "Atuação", "Equipe", "Contato"],
+      kicker: "Advocacia empresarial",
+      sub: "Contratos, trabalhista e societário para empresas que não podem parar.",
+      botoes: ["Falar com o time", "Áreas de atuação"],
+      prova: "18 anos de atuação · OAB/SP",
+    },
     ilustrativo: true,
     chamada: ["Defesa", "com método."],
     layout: "central",
@@ -327,6 +398,13 @@ export const projetos: Projeto[] = [
     exclusivo: true,
     imagem: "/conceitos/p366.jpg",
     fonte: "'Space Grotesk', sans-serif",
+    pagina: {
+      menu: ["Espaços", "Planos", "Eventos", "Contato"],
+      kicker: "Vila Madalena · São Paulo",
+      sub: "Salas privativas, estações flexíveis e café que não acaba.",
+      botoes: ["Agendar visita", "Ver planos"],
+      prova: "4,7 no Google · 96 avaliações",
+    },
     ilustrativo: true,
     chamada: ["Trabalhe", "com vista."],
     layout: "galeria",

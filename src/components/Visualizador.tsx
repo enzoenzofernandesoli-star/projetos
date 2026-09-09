@@ -79,7 +79,7 @@ export function Visualizador({
           <div
             aria-hidden
             className={`absolute inset-0 transition-opacity duration-500 ${
-              carregado ? "opacity-0" : "opacity-60"
+              carregado ? "opacity-0" : "opacity-100"
             }`}
           >
             <MioloJanela projeto={projeto} />
@@ -95,7 +95,7 @@ export function Visualizador({
               sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
             />
           ) : (
-            <div className="absolute inset-0 grid place-items-center bg-ink/72 p-6 text-center backdrop-blur-sm">
+            <div className="absolute inset-0 grid place-items-center bg-ink/55 p-6 text-center backdrop-blur-[3px]">
               <div className="max-w-sm">
                 <p className="rotulo text-signal-bright">
                   {projeto.exclusivo ? "Projeto exclusivo" : "Sem acesso público"}
