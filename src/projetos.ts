@@ -47,6 +47,8 @@ export type Projeto = {
   restricao?: string;
   /** Endereço do projeto restrito: existe, mas não abre para o público. */
   dominio?: string;
+  /** Entrou pelo sincronizador e ainda não passou por revisão humana. */
+  revisar?: boolean;
   /**
    * Conceito criado para a vitrine. NÃO é trabalho entregue a cliente. Fica
    * só no dado, sem aparecer para quem visita. Para separar depois:
@@ -123,15 +125,6 @@ export const projetos: Projeto[] = [
     url: "https://ana-magalhaes.vercel.app",
   },
   {
-    nome: "Maria Flor",
-    tipo: "Moda feminina",
-    descricao:
-      "Vitrine de moda com catálogo visual e atendimento direto pelo WhatsApp.",
-    servico: "sites",
-    capa: "/capas/maria-flor.png",
-    url: "https://maria-flor.vercel.app",
-  },
-  {
     nome: "Imobilis Momentom",
     tipo: "Imóveis de alto padrão · Fortaleza",
     descricao:
@@ -156,7 +149,80 @@ export const projetos: Projeto[] = [
       "Material sobre queda de cabelo, com página de oferta e criativos de anúncio.",
     servico: "sites",
     capa: "/capas/calvicie.png",
-    restricao: "Ainda não publicado",
+    url: "https://calvice.vercel.app",
+  },
+
+  {
+    nome: "Sobrecarga",
+    tipo: "Arena Neon · Entretenimento",
+    descricao:
+      "Arena de jogos com identidade neon, agenda de eventos e reserva de horário.",
+    servico: "sites",
+    capa: "/capas/sobrecarga.png",
+    url: "https://sobrecarga-six.vercel.app",
+  },
+  {
+    nome: "Mais Fruty",
+    tipo: "Açaí e sorvete artesanal",
+    descricao:
+      "Fábrica de açaí e sorvete, com linha de produtos e contato direto para revenda.",
+    servico: "sites",
+    capa: "/capas/maisfruty.png",
+    url: "https://maisfruty.vercel.app",
+  },
+  {
+    nome: "Barbearia do Gordo",
+    tipo: "Barbearia · Itaim Paulista",
+    descricao:
+      "Barbearia de bairro com serviços, equipe e agendamento pelo WhatsApp.",
+    servico: "sites",
+    capa: "/capas/shophaf.png",
+    url: "https://shophaf.vercel.app",
+  },
+  {
+    nome: "Viveci Vendas",
+    tipo: "Controle de vendas · Sistema interno",
+    descricao:
+      "Painel de vendas do estúdio: propostas, fechamentos e acompanhamento.",
+    servico: "sistemas",
+    capa: "/capas/vvcvendas.png",
+    url: "https://vvcvendas.vercel.app",
+  },
+  {
+    nome: "Minuto Alfa",
+    tipo: "Método de leitura",
+    descricao:
+      "Página do método de leitura em 21 dias, com a promessa, o passo a passo e a oferta.",
+    servico: "sites",
+    capa: "/capas/minutoalfa.png",
+    url: "https://minutoalfa.vercel.app",
+  },
+  {
+    nome: "TARGET Treinamento Funcional",
+    tipo: "Academia · Bom Retiro, SP",
+    descricao:
+      "Funcional, musculação, pilates e boxe, com horários e planos na página.",
+    servico: "sites",
+    capa: "/capas/target-treinamento-funcional.png",
+    url: "https://target-treinamento-funcional.vercel.app",
+  },
+  {
+    nome: "Maria Flor Moda Festa",
+    tipo: "Vestidos de festa · Bom Retiro, SP",
+    descricao:
+      "Vitrine de vestidos de festa, com catálogo visual e atendimento no WhatsApp.",
+    servico: "sites",
+    capa: "/capas/maria-flor-moda-festa-jwbd.png",
+    url: "https://maria-flor-moda-festa-jwbd.vercel.app",
+  },
+  {
+    nome: "VW7 Fisioterapia & Recovery",
+    tipo: "Fisioterapia · São Paulo",
+    descricao:
+      "Fisioterapia ortopédica, esportiva e quiropraxia, com as duas unidades na página.",
+    servico: "sites",
+    capa: "/capas/vw-7-vdnf.png",
+    url: "https://vw-7-vdnf.vercel.app",
   },
 
   // ---------------- Aplicativos ----------------
@@ -230,6 +296,7 @@ export const projetos: Projeto[] = [
     servico: "sistemas",
     capa: "/capas/prospector.png",
     restricao: "Acesso restrito — exige login",
+    dominio: "prospector-theta-dun.vercel.app",
   },
   {
     nome: "Agenda Viveci",

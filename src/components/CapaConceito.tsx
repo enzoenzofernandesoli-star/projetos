@@ -88,14 +88,14 @@ export function CapaConceito({ projeto }: { projeto: Projeto }) {
           {pagina?.kicker}
         </span>
 
-        <h3
+        <p
           className="mt-[2cqw] text-[6.6cqw] leading-[1.04]"
           style={{ fontFamily: fonte }}
         >
           {linha1}
           <br />
           {linha2}
-        </h3>
+        </p>
 
         <p
           className={`mt-[2.2cqw] text-[2.2cqw] leading-snug opacity-80 ${
