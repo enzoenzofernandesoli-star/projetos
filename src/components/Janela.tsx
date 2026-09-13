@@ -136,7 +136,13 @@ export function MioloJanela({
   projeto: Projeto;
   className?: string;
 }) {
-  if (!projeto.capa) return <CapaConceito projeto={projeto} />;
+  if (!projeto.capa && projeto.exclusivo) return <CapaConceito projeto={projeto} />;
+  if (!projeto.capa) return (
+    <div className="absolute inset-0 flex flex-col justify-end bg-[radial-gradient(circle_at_75%_20%,rgba(24,119,255,.35),transparent_55%),linear-gradient(135deg,#102844,#020d1b)] p-5 text-ivory">
+      <span className="rotulo text-signal-bright">Projeto digital</span>
+      <strong className="mt-3 font-[family-name:var(--font-display)] text-lg">{projeto.nome}</strong>
+    </div>
+  );
   return (
     <img
       src={projeto.capa}

@@ -5,8 +5,8 @@
  *   npm run sincronizar          lista o que falta e o que mudou
  *   npm run sincronizar -- --aplicar   escreve em src/projetos.ts e baixa capas
  *
- * Usa a CLI da Vercel, que já está autenticada nesta máquina — nenhum token
- * precisa ser guardado no repositório nem passado adiante.
+ * Usa a CLI da Vercel após login na máquina — nenhum token precisa ser
+ * guardado no repositório nem passado adiante.
  *
  * Nada entra na vitrine sem passar por três checagens, porque um cartão que
  * abre errado é pior do que cartão nenhum:
@@ -91,6 +91,9 @@ function listarDaVercel() {
     if (r.error) throw r.error;
     const saida = `${r.stdout ?? ""}
 ${r.stderr ?? ""}`;
+    if (r.status !== 0 || /no existing credentials|starting login flow|not logged in/i.test(saida)) {
+      throw new Error(`Vercel indisponível ou sem login. Execute "vercel login" e tente novamente. Detalhe: ${saida.trim().slice(-350)}`);
+    }
 
     for (const linha of saida.split("\n")) {
       const m = linha.match(/^\s*(\S+)\s+(https:\/\/\S+)\s/);
@@ -101,6 +104,7 @@ ${r.stderr ?? ""}`;
     if (!cursor) break;
     proximo = cursor[1];
   }
+  if (!projetos.length) throw new Error("A Vercel não retornou projetos reconhecíveis. Confira o login e o formato da listagem; nada foi alterado.");
   return projetos;
 }
 
@@ -166,16 +170,17 @@ const titulacao = (s) =>
     .join(" ");
 
 function blocoTS({ nome, url, titulo, capa }) {
-  const descricao = titulo
-    ? titulo.replace(/["\\]/g, "").slice(0, 150)
-    : "Descrição a escrever.";
+  const descricao = titulo && titulo !== titulacao(nome)
+    ? titulo.slice(0, 150)
+    : "Projeto publicado pela Viveci. Explore a prévia para conhecer o site.";
   return `  {
-    nome: "${titulacao(nome)}",
-    tipo: "A definir",
-    descricao: "${descricao}",
-    servico: "sites",
-    capa: "${capa}",
-    url: "${url}",
+    nome: ${JSON.stringify(titulacao(nome))},
+    tipo: "Projeto digital",
+    descricao: ${JSON.stringify(descricao)},
+    servico: "outros",
+    capa: ${JSON.stringify(capa)},
+    url: ${JSON.stringify(url)},
+    adicionadoEm: ${JSON.stringify(new Date().toISOString().slice(0, 10))},
     revisar: true,
   },
 `;
@@ -190,7 +195,13 @@ const jaTem = (url, nome) =>
   new RegExp(`nome: "${titulacao(nome)}"`).test(fonte);
 
 console.log(cor.fraco("Consultando a Vercel..."));
-const daVercel = listarDaVercel();
+let daVercel;
+try {
+  daVercel = listarDaVercel();
+} catch (erro) {
+  console.error(cor.erro(String(erro.message ?? erro)));
+  process.exit(1);
+}
 console.log(cor.fraco(`${daVercel.length} projetos na conta.\n`));
 
 const novos = [];

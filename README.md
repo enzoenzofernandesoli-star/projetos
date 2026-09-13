@@ -26,10 +26,14 @@ deixar entrar:
 Também descarta implantações repetidas do mesmo site — a conta costuma ter
 três ou quatro do mesmo projeto — ficando com a mais recente de cada título.
 
-O que entra vem marcado com `revisar: true`, porque o nome sai do slug da
-Vercel: `maria-flor-moda-festa-jwbd` vira "Maria Flor Moda Festa Jwbd". Abra
-`src/projetos.ts`, arrume nome, tipo, descrição e serviço, tire a marca, e
-publique.
+O que entra vem marcado com `revisar: true` e fica em "Outros projetos", sem
+atribuir um serviço ou resultado não confirmado. O cartão recebe uma capa
+genérica se a captura falhar. Novos entram primeiro; `prioridade` organiza
+projetos adicionados na mesma data ou sem data. Para curadoria, ajuste nome, tipo, descrição,
+serviço e prioridade em `src/projetos.ts`, tire `revisar` e publique.
+
+Sem login na Vercel, ou se o formato da listagem mudar, o comando falha com
+erro explícito. Zero projetos não é tratado como sincronização concluída.
 
 Para nunca mostrar um projeto na vitrine, acrescente o nome dele em `IGNORAR`,
 no topo de `scripts/sincronizar-vercel.mjs`.
@@ -43,8 +47,9 @@ npm run dev
 
 ## Como o catálogo é organizado
 
-`src/projetos.ts` é a única fonte. Cada item tem um `servico`, que define a
-aba onde aparece: sites, aplicativos, sistemas, visibilidade ou suporte.
+`src/projetos.ts` é a única fonte. A aba "Todos" abre por padrão. Os filtros
+incluem sites, aplicativos, sistemas, visibilidade, suporte e outros projetos.
+O catálogo ordena primeiro por `adicionadoEm`, depois por `prioridade`.
 
 - **com `url`** — abre ao vivo dentro da página
 - **com `dominio` e `restricao`** — sistema com login; mostra a captura e o

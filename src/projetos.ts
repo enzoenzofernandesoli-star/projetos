@@ -30,6 +30,11 @@ export const servicos = [
     nome: "Suporte",
     resumo: "Manutenção e atualizações. Atendimento por WhatsApp após a entrega.",
   },
+  {
+    id: "outros",
+    nome: "Outros projetos",
+    resumo: "Projetos recém-publicados aguardando classificação.",
+  },
 ] as const;
 
 export type ServicoId = (typeof servicos)[number]["id"];
@@ -49,6 +54,10 @@ export type Projeto = {
   dominio?: string;
   /** Entrou pelo sincronizador e ainda não passou por revisão humana. */
   revisar?: boolean;
+  /** Data de entrada na vitrine. Novos projetos aparecem primeiro. */
+  adicionadoEm?: string;
+  /** Curadoria manual: maior valor coloca projetos mais fortes na frente. */
+  prioridade?: number;
   /**
    * Conceito criado para a vitrine. NÃO é trabalho entregue a cliente. Fica
    * só no dado, sem aparecer para quem visita. Para separar depois:
@@ -154,6 +163,7 @@ export const projetos: Projeto[] = [
 
   {
     nome: "Sobrecarga",
+    prioridade: 1,
     tipo: "Arena Neon · Entretenimento",
     descricao:
       "Arena de jogos com identidade neon, agenda de eventos e reserva de horário.",
@@ -163,6 +173,7 @@ export const projetos: Projeto[] = [
   },
   {
     nome: "Mais Fruty",
+    prioridade: 1,
     tipo: "Açaí e sorvete artesanal",
     descricao:
       "Fábrica de açaí e sorvete, com linha de produtos e contato direto para revenda.",
@@ -172,6 +183,7 @@ export const projetos: Projeto[] = [
   },
   {
     nome: "Barbearia do Gordo",
+    prioridade: 1,
     tipo: "Barbearia · Itaim Paulista",
     descricao:
       "Barbearia de bairro com serviços, equipe e agendamento pelo WhatsApp.",
@@ -181,6 +193,7 @@ export const projetos: Projeto[] = [
   },
   {
     nome: "Viveci Vendas",
+    prioridade: 1,
     tipo: "Controle de vendas · Sistema interno",
     descricao:
       "Painel de vendas do estúdio: propostas, fechamentos e acompanhamento.",
@@ -190,6 +203,7 @@ export const projetos: Projeto[] = [
   },
   {
     nome: "Minuto Alfa",
+    prioridade: 1,
     tipo: "Método de leitura",
     descricao:
       "Página do método de leitura em 21 dias, com a promessa, o passo a passo e a oferta.",
@@ -199,6 +213,7 @@ export const projetos: Projeto[] = [
   },
   {
     nome: "TARGET Treinamento Funcional",
+    prioridade: 1,
     tipo: "Academia · Bom Retiro, SP",
     descricao:
       "Funcional, musculação, pilates e boxe, com horários e planos na página.",
@@ -208,6 +223,7 @@ export const projetos: Projeto[] = [
   },
   {
     nome: "Maria Flor Moda Festa",
+    prioridade: 1,
     tipo: "Vestidos de festa · Bom Retiro, SP",
     descricao:
       "Vitrine de vestidos de festa, com catálogo visual e atendimento no WhatsApp.",
@@ -217,6 +233,7 @@ export const projetos: Projeto[] = [
   },
   {
     nome: "VW7 Fisioterapia & Recovery",
+    prioridade: 1,
     tipo: "Fisioterapia · São Paulo",
     descricao:
       "Fisioterapia ortopédica, esportiva e quiropraxia, com as duas unidades na página.",
@@ -481,3 +498,10 @@ export const projetos: Projeto[] = [
     paleta: { fundo: "#081218", campo: "#0f2530", tinta: "#eaf5f8", acento: "#35c4c4" },
   },
 ];
+
+/** Projetos adicionados mais recentemente primeiro; curadoria desempata. */
+export const projetosOrdenados = [...projetos].sort((a, b) =>
+  (b.adicionadoEm ?? "").localeCompare(a.adicionadoEm ?? "") ||
+  (b.prioridade ?? 0) - (a.prioridade ?? 0) ||
+  projetos.indexOf(a) - projetos.indexOf(b)
+);

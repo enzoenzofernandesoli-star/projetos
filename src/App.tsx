@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from "react";
-import { projetos, servicos, type Projeto, type ServicoId } from "./projetos";
+import { projetosOrdenados, servicos, type Projeto, type ServicoId } from "./projetos";
 import { Janela, MioloJanela } from "./components/Janela";
 import { Visualizador } from "./components/Visualizador";
 import { LogoVVC } from "./components/LogoVVC";
@@ -68,12 +68,13 @@ export default function App() {
   useHeroParallax(heroi);
   useDepthMotion(pagina);
   const ctaHeroi = useMagnetic<HTMLAnchorElement>();
-  const [aba, setAba] = useState<ServicoId>("sites");
+  const [aba, setAba] = useState<ServicoId | "todos">("todos");
   const [aberto, setAberto] = useState<Projeto | null>(null);
 
-  const lista = useMemo(() => projetos.filter((p) => p.servico === aba), [aba]);
-  const servicoAtual = servicos.find((s) => s.id === aba)!;
-  const aoVivo = projetos.filter((p) => p.url).length;
+  const lista = useMemo(() => aba === "todos" ? projetosOrdenados : projetosOrdenados.filter((p) => p.servico === aba), [aba]);
+  const servicoAtual = servicos.find((s) => s.id === aba);
+  const aoVivo = projetosOrdenados.filter((p) => p.url).length;
+  const abas = [{ id: "todos", nome: "Todos" }, ...servicos] as const;
 
   return (
     <div ref={pagina} className="min-h-screen">
@@ -149,7 +150,7 @@ export default function App() {
           </TextReveal>
           <p className="mt-6 max-w-lg text-base leading-relaxed text-ivory/75">
             Cada janela abaixo é o site real, rodando aqui dentro. Clique para
-            navegar sem sair desta página. {aoVivo} dos {projetos.length}{" "}
+            navegar sem sair desta página. {aoVivo} dos {projetosOrdenados.length}{" "}
             projetos estão no ar.
           </p>
           <div className="mt-9 flex flex-wrap items-center gap-4">
@@ -191,15 +192,15 @@ export default function App() {
                 evento.key === "ArrowRight" ? 1 : evento.key === "ArrowLeft" ? -1 : 0;
               if (!passo) return;
               evento.preventDefault();
-              const atual = servicos.findIndex((s) => s.id === aba);
-              const proximo = servicos[(atual + passo + servicos.length) % servicos.length];
+              const atual = abas.findIndex((s) => s.id === aba);
+              const proximo = abas[(atual + passo + abas.length) % abas.length];
               setAba(proximo.id);
               document.getElementById(`aba-${proximo.id}`)?.focus();
             }}
           >
-            {servicos.map((servico) => {
+            {abas.map((servico) => {
               const ativo = aba === servico.id;
-              const quantos = projetos.filter((p) => p.servico === servico.id).length;
+              const quantos = servico.id === "todos" ? projetosOrdenados.length : projetosOrdenados.filter((p) => p.servico === servico.id).length;
               return (
                 <button
                   key={servico.id}
@@ -230,7 +231,7 @@ export default function App() {
           </div>
           <div className="mb-11 border-t border-steel/18 pt-5">
             <p className="max-w-xl text-sm leading-relaxed text-ivory/65">
-              {servicoAtual.resumo}
+              {servicoAtual?.resumo ?? "Todos os projetos da Viveci, dos mais recentes e destacados aos anteriores."}
             </p>
           </div>
 
