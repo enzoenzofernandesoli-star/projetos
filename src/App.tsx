@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from "react";
-import { projetosOrdenados, servicos, type Projeto, type ServicoId } from "./projetos";
+import { projetosOrdenados, servicos, sitesEmDestaque, type Projeto, type ServicoId } from "./projetos";
 import { Janela, MioloJanela } from "./components/Janela";
 import { Visualizador } from "./components/Visualizador";
 import { LogoVVC } from "./components/LogoVVC";
@@ -71,9 +71,8 @@ export default function App() {
   const [aba, setAba] = useState<ServicoId | "todos">("todos");
   const [aberto, setAberto] = useState<Projeto | null>(null);
 
-  const lista = useMemo(() => aba === "todos" ? projetosOrdenados : projetosOrdenados.filter((p) => p.servico === aba), [aba]);
+  const lista = useMemo(() => aba === "todos" ? sitesEmDestaque : projetosOrdenados.filter((p) => p.servico === aba), [aba]);
   const servicoAtual = servicos.find((s) => s.id === aba);
-  const aoVivo = projetosOrdenados.filter((p) => p.url).length;
   const abas = [{ id: "todos", nome: "Todos" }, ...servicos] as const;
 
   return (
@@ -150,8 +149,8 @@ export default function App() {
           </TextReveal>
           <p className="mt-6 max-w-lg text-base leading-relaxed text-ivory/75">
             Cada janela abaixo é o site real, rodando aqui dentro. Clique para
-            navegar sem sair desta página. {aoVivo} dos {projetosOrdenados.length}{" "}
-            projetos estão no ar.
+            navegar sem sair desta página. Aqui estão {sitesEmDestaque.length} sites
+            selecionados; use os filtros para explorar os demais projetos.
           </p>
           <div className="mt-9 flex flex-wrap items-center gap-4">
             <a
@@ -200,7 +199,7 @@ export default function App() {
           >
             {abas.map((servico) => {
               const ativo = aba === servico.id;
-              const quantos = servico.id === "todos" ? projetosOrdenados.length : projetosOrdenados.filter((p) => p.servico === servico.id).length;
+              const quantos = servico.id === "todos" ? sitesEmDestaque.length : projetosOrdenados.filter((p) => p.servico === servico.id).length;
               return (
                 <button
                   key={servico.id}
@@ -231,7 +230,7 @@ export default function App() {
           </div>
           <div className="mb-11 border-t border-steel/18 pt-5">
             <p className="max-w-xl text-sm leading-relaxed text-ivory/65">
-              {servicoAtual?.resumo ?? "Todos os projetos da Viveci, dos mais recentes e destacados aos anteriores."}
+              {servicoAtual?.resumo ?? "Seleção dos melhores sites para negócios. Jogos, sistemas e projetos pessoais ficam nos filtros próprios."}
             </p>
           </div>
 

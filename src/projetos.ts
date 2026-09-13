@@ -58,6 +58,8 @@ export type Projeto = {
   adicionadoEm?: string;
   /** Curadoria manual: maior valor coloca projetos mais fortes na frente. */
   prioridade?: number;
+  /** Site selecionado para a aba inicial "Todos". */
+  destaque?: boolean;
   /**
    * Conceito criado para a vitrine. NÃO é trabalho entregue a cliente. Fica
    * só no dado, sem aparecer para quem visita. Para separar depois:
@@ -98,7 +100,29 @@ export type Projeto = {
 export const projetos: Projeto[] = [
   // ---------------- Sites ----------------
   {
+    nome: "American Hostel e Pousada",
+    tipo: "Hospedagem · Joinville",
+    descricao:
+      "Site de hospedagem com acomodações, estrutura, localização e acesso à reserva.",
+    servico: "sites",
+    capa: "/capas/american-hostel.png",
+    url: "https://american-hoste-l.vercel.app/",
+    adicionadoEm: "2026-09-12",
+  },
+  {
+    nome: "Melo & Melo",
+    tipo: "Conceito imobiliário · Bragança Paulista",
+    descricao:
+      "Site conceitual para a Melo & Melo, com catálogo de imóveis e navegação editorial.",
+    servico: "sites",
+    destaque: true,
+    capa: "/capas/melo-melo-arquitetura-dos-sonhos.png",
+    url: "https://melo-melo-arquitetura-dos-sonhos.vercel.app/",
+    adicionadoEm: "2026-09-12",
+  },
+  {
     nome: "Pousada da Nívea",
+    destaque: true,
     tipo: "Hotelaria",
     descricao:
       "Site de hospedagem com apresentação dos quartos, localização e contato direto pelo WhatsApp.",
@@ -108,6 +132,7 @@ export const projetos: Projeto[] = [
   },
   {
     nome: "Barbearia Buenos Aires",
+    destaque: true,
     tipo: "Barbearia · Centro de São Paulo",
     descricao:
       "Institucional com serviços, equipe e agendamento. Barbearia clássica na Quirino de Andrade.",
@@ -117,6 +142,7 @@ export const projetos: Projeto[] = [
   },
   {
     nome: "Care For Men",
+    destaque: true,
     tipo: "Barbearia premium · Jardins",
     descricao:
       "Barbearia de alto padrão. Estética escura, foco em experiência e reserva de horário.",
@@ -126,6 +152,7 @@ export const projetos: Projeto[] = [
   },
   {
     nome: "Ana Magalhães",
+    destaque: true,
     tipo: "Biomedicina estética · São Paulo",
     descricao:
       "Institucional de estética facial e corporal, com procedimentos, resultados e contato.",
@@ -135,6 +162,7 @@ export const projetos: Projeto[] = [
   },
   {
     nome: "Imobilis Momentom",
+    destaque: true,
     tipo: "Imóveis de alto padrão · Fortaleza",
     descricao:
       "Apresentação editorial de imóveis de altíssimo padrão, com navegação cinematográfica.",
@@ -147,7 +175,7 @@ export const projetos: Projeto[] = [
     tipo: "Página de venda",
     descricao:
       "Landing do pacote de prompts para social media, com oferta, prova e checkout.",
-    servico: "sites",
+    servico: "outros",
     capa: "/capas/arsenal-de-prompts.png",
     url: "https://arsenal-de-prompts.vercel.app",
   },
@@ -156,7 +184,7 @@ export const projetos: Projeto[] = [
     tipo: "Página de venda",
     descricao:
       "Material sobre queda de cabelo, com página de oferta e criativos de anúncio.",
-    servico: "sites",
+    servico: "outros",
     capa: "/capas/calvicie.png",
     url: "https://calvice.vercel.app",
   },
@@ -167,13 +195,14 @@ export const projetos: Projeto[] = [
     tipo: "Arena Neon · Entretenimento",
     descricao:
       "Arena de jogos com identidade neon, agenda de eventos e reserva de horário.",
-    servico: "sites",
+    servico: "outros",
     capa: "/capas/sobrecarga.png",
     url: "https://sobrecarga-six.vercel.app",
   },
   {
     nome: "Mais Fruty",
     prioridade: 1,
+    destaque: true,
     tipo: "Açaí e sorvete artesanal",
     descricao:
       "Fábrica de açaí e sorvete, com linha de produtos e contato direto para revenda.",
@@ -207,13 +236,14 @@ export const projetos: Projeto[] = [
     tipo: "Método de leitura",
     descricao:
       "Página do método de leitura em 21 dias, com a promessa, o passo a passo e a oferta.",
-    servico: "sites",
+    servico: "outros",
     capa: "/capas/minutoalfa.png",
     url: "https://minutoalfa.vercel.app",
   },
   {
     nome: "TARGET Treinamento Funcional",
     prioridade: 1,
+    destaque: true,
     tipo: "Academia · Bom Retiro, SP",
     descricao:
       "Funcional, musculação, pilates e boxe, com horários e planos na página.",
@@ -224,6 +254,7 @@ export const projetos: Projeto[] = [
   {
     nome: "Maria Flor Moda Festa",
     prioridade: 1,
+    destaque: true,
     tipo: "Vestidos de festa · Bom Retiro, SP",
     descricao:
       "Vitrine de vestidos de festa, com catálogo visual e atendimento no WhatsApp.",
@@ -234,6 +265,7 @@ export const projetos: Projeto[] = [
   {
     nome: "VW7 Fisioterapia & Recovery",
     prioridade: 1,
+    destaque: true,
     tipo: "Fisioterapia · São Paulo",
     descricao:
       "Fisioterapia ortopédica, esportiva e quiropraxia, com as duas unidades na página.",
@@ -504,4 +536,9 @@ export const projetosOrdenados = [...projetos].sort((a, b) =>
   (b.adicionadoEm ?? "").localeCompare(a.adicionadoEm ?? "") ||
   (b.prioridade ?? 0) - (a.prioridade ?? 0) ||
   projetos.indexOf(a) - projetos.indexOf(b)
+);
+
+/** Vitrine principal: só sites selecionados, publicados e não ilustrativos. */
+export const sitesEmDestaque = projetosOrdenados.filter(
+  (projeto) => projeto.servico === "sites" && projeto.destaque && projeto.url && !projeto.ilustrativo
 );

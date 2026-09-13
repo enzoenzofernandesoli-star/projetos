@@ -47,8 +47,13 @@ npm run dev
 
 ## Como o catálogo é organizado
 
-`src/projetos.ts` é a única fonte. A aba "Todos" abre por padrão. Os filtros
-incluem sites, aplicativos, sistemas, visibilidade, suporte e outros projetos.
+`src/projetos.ts` é a única fonte. A aba "Todos" abre por padrão, mas é uma
+seleção editorial: só exibe sites publicados com `destaque: true`. O filtro
+"Sites" mostra todos os sites, inclusive os que não estão em destaque. Jogos e
+páginas de produtos próprios ficam em "Outros projetos"; aplicativos e sistemas
+conservam seus filtros. Projetos novos não entram em
+"Todos" automaticamente: precisam de revisão e curadoria.
+Os filtros incluem sites, aplicativos, sistemas, visibilidade, suporte e outros projetos.
 O catálogo ordena primeiro por `adicionadoEm`, depois por `prioridade`.
 
 - **com `url`** — abre ao vivo dentro da página
